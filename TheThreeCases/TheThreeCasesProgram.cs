@@ -10,7 +10,7 @@ using System.Text.RegularExpressions;
 using System.IO;
 namespace TheThreeCases
 {
-    internal class Program
+    internal class TheThreeCasesProgram
     {
         static void Main(string[] args)
         {
