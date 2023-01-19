@@ -1,0 +1,431 @@
+// Programet
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using ClassLibraryFootball;
+using ClassLibraryDanseKonkurrence;
+using ClassLibraryPassword;
+using System.Text.RegularExpressions;
+using System.IO;
+namespace TheThreeCases
+{
+    internal class TheThreeCasesProgram
+    {
+        static void Main(string[] args)
+        {
+        // Min hoved menu til alle opgaver
+        start:;
+            Console.Clear();
+            Console.WriteLine(" ");
+            Console.WriteLine(" ______________________________________________________________________________________________________________________");
+            Console.WriteLine(" ");
+            Console.WriteLine("                                                     Hoved menu");
+            Console.WriteLine("                                     Nedenunder kan du vælge nogle funktioner  ");
+            Console.WriteLine(" ______________________________________________________________________________________________________________________");
+            Console.WriteLine(" ");
+            Console.WriteLine(" [F] Football Turnering [D] Danse Konkurrence [P] Password Opprettelse [A] Afslut programmet ");
+            Console.WriteLine(" ");
+            Console.Write(" Vælg funktion: ");
+            Console.SetCursorPosition(16, 9);
+
+            // Min switch case som bruger hovedmenuen til alle opgaver så man kan vælge i mellem dem
+            var menuinput = Console.ReadKey(); // læser dit input af hvilken knap du trykker på uden at skulle trykke ''enter''
+            switch (menuinput.Key)
+            {
+                case ConsoleKey.F: // bare ved trykket af knappen ''F'' så går den ind i Fodbold opgaven 
+
+                    // Football opgaven
+                    Console.Clear();
+                    Console.WriteLine("Antal afleveringer?: "); // spørg om afleveringer
+                    int afleveringer = Convert.ToInt32(Console.ReadLine()); // læser mit input af afleveringer
+                    Console.WriteLine(); // mellemrum
+                    Console.WriteLine("Er der mål? (Skriv mål hvis ja): "); // spørg om der er mål
+                    string mål = Console.ReadLine().ToLower(); // læser mit input af om der er mål eller ikke og om det er STORE eller små bogstaver
+                    Console.WriteLine(); // mellemrum
+
+                    Football Spark = new Football(); // jeg laver et nyt object som jeg kalder 'Spark'
+                    Spark.MålForsøg(mål, afleveringer); // her bruger jeg mit nye object og jeg referere til en metode som jeg har lavet og inde i den bruger jeg mine variabler
+                    Console.ReadKey(); // gør at programmet ikke lukker med det samme
+                    break;
+
+                case ConsoleKey.D:  // bare ved trykket af knappen ''D'' så går den ind i danseopgaven 
+
+                    // Danse opgaven
+                    Console.Clear();
+                    string navn = string.Empty; // sætter min string til at være 'empty' som egentlig bare gør at den er tom til at starte med
+                    int point = 0; // sætter point til at være 0
+
+                    Console.WriteLine("Indtast dit navn: "); // spørg om navn
+                    navn = Console.ReadLine(); // læser det man skriver som navn
+                    Console.WriteLine("Indtast dine point: "); // spørg om point
+                    point = Convert.ToInt32(Console.ReadLine()); // læser det man skriver som point
+                    DancerClass dancer1 = new DancerClass(navn, point); // jeg laver et nyt object som jeg kalder for dancer1 hvor mine variabler (navn og point) bliver brugt
+
+                    Console.WriteLine("Indtast dit navn: "); // spørg om navn
+                    navn = Console.ReadLine(); // læser det man skriver som navn
+                    Console.WriteLine("Indtast dine point: "); // spørg om point
+                    point = Convert.ToInt32(Console.ReadLine()); // læser det man skriver som point
+                    DancerClass dancer2 = new DancerClass(navn, point); // jeg laver et nyt object som jeg kalder for dancer2 hvor mine variabler (navn og point) bliver brugt
+
+                    DancerClass dancerTotal = new DancerClass(navn, point); // jeg laver et nyt og sidste object som jeg kalder dancerTotal og den bruger de samme variabler (navn og point)
+                    dancerTotal = dancer1 + dancer2; // her siger jeg at 'dancerTotal' er det samme som dancer1 og dancer2 lagt sammen
+                    Console.WriteLine($"Samlede resultat: {dancerTotal.Navn + dancerTotal.Point} "); // og her udskriver jeg det samlede resultat af begge navne og point
+                    Console.ReadKey(); // gør at programmet ikke lukker med det samme
+                    break;
+
+                case ConsoleKey.P: // bare ved trykket af knappen ''P'' så går den ind i password opgaven
+
+                    // Password opgaven 
+                    Console.Clear();
+                    string BrugerNavn = string.Empty; // laver en string som jeg sætter til at være tom
+                    string BrugerPassword = string.Empty; // laver en string som jeg sætter til at være tom
+                    bool valid = false; // laver en bool værdi som jeg sætter til falsk
+                    Password Tegn = new Password(BrugerPassword); // jeg laver et object som der bruger min tomme string
+                    string Pathfile = @"C:\Users\Marlar\Desktop\ALLE OPGAVER\Genopfriskning på programmering\Classes og Objects\TheThreeCasesSolution\TheThreeCases\UsersTheThreeCases\Users.txt"; // jeg angiver at strengen ''Pathfile'' er det samme som tekstfilen til brugerene eller med andre ord ''Pathfile'' er min tekstfil
+                    string path = @"C:\Users\Marlar\Desktop\ALLE OPGAVER\Genopfriskning på programmering\Classes og Objects\TheThreeCasesSolution\TheThreeCases\UsersTheThreeCases"; // min mappe til brugerene
+                    Directory.CreateDirectory(path); // laver min mappe men gør ikke noget hvis den specificerede mappe allerede eksistere
+
+                    // spørg om brugernavn hvor inputtet bliver læst og derefter bliver gemt til en tekstfil
+                    Console.WriteLine("Opret et brugernavn eller login. Der er ingen krav.");
+                    Console.Write("Opret her: ");
+                    BrugerNavn = Console.ReadLine();
+
+                    // et do/while loop som spørg om password hvor alle krav skal opfyldes og kun hvis alle krav er opfyldt skal den gemme inputtet til en tekstfil 
+                    do
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine("Opret et password der opfylder alle kravene. ");
+                        Console.WriteLine("Krav: Minimum 12 tegn, STORE og små bogstaver, Minimum et tal og et specialtegn. Ingen tal i starten eller slutningen.");
+                        Console.Write("Opret her: ");
+                        BrugerPassword = Console.ReadLine();
+                        valid = Tegn.AlleKrav(BrugerNavn, BrugerPassword, valid); // hvert enkelt krav som der skal opfyldes
+                    } while (valid == false);
+
+                    File.WriteAllText(Pathfile, BrugerNavn + " , " + BrugerPassword); // overskriver mine filer så hver gang jeg laver en ny bruger/password så bliver den gamle overskrevet
+                    Console.WriteLine();
+                    Console.ForegroundColor = ConsoleColor.Green; // skifter tekstfarven til grøn
+                    Console.WriteLine("Tillykke! - Dit password er nu blevet oprettet.");
+                    Console.ForegroundColor = ConsoleColor.Gray; // skifter tekstfarven til normal
+                    Console.ReadKey();
+
+                    string Login = File.ReadAllText(Pathfile); // sætter strengen ''Login'' til at skulle læse alt min tekst inde i min tekstfil
+                  
+                    /*Jeg laver et do/while loop som først ber dig om at logge ind med det brugernavn og password du lavede tidligere.
+                      Hvis dit login er blevet godkendt så kan du nu gå videre og ændre dit password med de samme krav som dit gamle password.
+                      Hvis det er forkert så får du en fejlbesked og du bliver ved med at få den fejlbesked indtil du gør det rigtigt fordi det er et loop.*/
+                    
+                    do
+                    {
+                        Console.WriteLine();
+                        Console.Write("Indtast brugernavn for at logge ind: ");
+                        BrugerNavn = Console.ReadLine();
+                        Console.Write("Indtast password for at logge ind: ");
+                        BrugerPassword = Console.ReadLine();
+
+                        if (Login == (BrugerNavn + " , " + BrugerPassword))
+                        {
+                            Console.WriteLine();
+                            Console.ForegroundColor = ConsoleColor.Green; // skifter tekstfarven til grøn
+                            Console.WriteLine("Dit login er godkendt og du kan nu oprette et nyt password!");
+                            Console.ForegroundColor = ConsoleColor.Gray; // skifter tekstfarven til normal
+                            Console.WriteLine();
+                            valid = true;
+                        }
+                        else
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red; // skifter tekstfarven til rød
+                            Console.WriteLine();
+                            Console.WriteLine("Dit login er forkert prøv igen.");
+                            Console.ForegroundColor = ConsoleColor.Gray; // skifter tekstfarven til normal
+                            valid = false;
+                        }
+                    } while (valid == false);
+
+                    Login = File.ReadAllText(Pathfile); // læser alt tekst i min tekstfil
+                    
+                    /* Jeg laver et do/while loop hvor du bliver bedt om at lave dit nye password efter du har logget ind korrekt.
+                       Først får du kravene at se igen derefter skal du indtaste dit nye password, hvis det er godkendt så lukker programmet og det bliver gemt til en tekstfil.
+                       Hvis det ikke er godkendt får du en fejlbesked indtil at du gør det rigtigt. Når du har gjort det rigtigt og det er godkendt lukker programmet og det bliver gemt til en tekstfil.*/
+                    do
+                    {
+                        Console.WriteLine("Krav: 12 tegn, STORE og små bogstaver, Et tal og et specialtegn, Ingen tal i starten eller slutningen, ingen mellemrum");
+                        Console.Write("Indtast det nye password: ");
+                        BrugerPassword = Console.ReadLine();
+                        valid = Tegn.AlleKrav(BrugerNavn, BrugerPassword, valid);
+
+                        if (Login == (BrugerNavn + " , " + BrugerPassword))
+                        {
+                            Console.WriteLine();
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("Dit nye password må ikke være det samme som det gamle!               | Ikke Godkendt.");
+                            Console.WriteLine();
+                            Console.ForegroundColor = ConsoleColor.Gray;
+                            valid = false;
+                        }
+                        else
+                        {
+                            if (valid)
+                            {
+                                Console.WriteLine();
+                                Console.ForegroundColor = ConsoleColor.Green;
+                                Console.WriteLine("Dit password er nu blevet ændret!");
+                                valid = true;
+                                File.AppendAllText(Pathfile, "\n" + BrugerNavn + " , " + BrugerPassword); // gemmer det som mine strings indeholder til en tekstfil, ''\n'' laver en ny linje
+                            }
+                            else
+                            {
+                                Console.WriteLine();
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.WriteLine("Dit password kunne desværre ikke ændres. Prøv igen");
+                                Console.ForegroundColor = ConsoleColor.Gray;
+                                Console.WriteLine();
+                                valid = false;
+                            }
+                        }
+                    } while (valid == false);
+                    Console.ReadKey();
+                    break;
+
+                case ConsoleKey.A: // bare ved trykket af knappen ''A'' så afslutter den programmet
+                    break;
+
+                default:  // hvis man ikke vælger nogle af de fire funktioner kommer der en fejlbesked
+                    Console.Clear();
+                    Console.WriteLine("Vælg venligst en af de fire funktioner!");
+                    Console.ReadKey();
+                    goto start; // hvis man ikke vælger nogle af de fire funktioner som man ser på skærmen så ´give den en fejlbesked og går tilbage til starten af programmet
+            }
+        }
+    }
+}
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// Football
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ClassLibraryFootball
+{
+    public class Football
+    {
+        public int Afleveringer { get; set; } 
+        public string Mål { get; set; }
+        public void MålForsøg(string mål, int afleveringer) 
+        {
+            if (mål == "mål")
+            { 
+                Console.Clear();
+                Console.WriteLine(" Olé olé olé");
+            }
+            else if (afleveringer < 1)
+            {
+                Console.Clear();
+                Console.WriteLine();
+                Console.WriteLine(" Shh");
+            }
+            else if (afleveringer >= 1 && afleveringer < 10)
+            {
+                Console.Clear();
+                for (int i = 1; i <= afleveringer; i++)
+                {
+                    Console.Write("Huh! ");
+                }
+            }
+            else if (afleveringer >= 10)
+            {
+                Console.Clear();
+                Console.WriteLine("High Five – Jubel!!!");
+            }
+        }
+    }
+}
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// DanseKonkurrence
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ClassLibraryDanseKonkurrence
+{
+    public class DancerClass // laver en ny class som jeg kalder for DancerClass
+    {
+        public string _navn; // jeg laver en public string '_navn' som jeg bruger til mine getters og setters
+        public int _point; // jeg laver en public int '_point' som jeg bruger til mine getters og setters
+
+        public string Navn // jeg laver en public string 'Navn' og inden i den laver jeg mine getters og setters
+        { // get returnere den nuværende værdi/value af '_navn' og set bruger nøgleordet 'value' til at sætte værdien af '_navn'
+            get
+            {
+                return _navn;
+            }
+            set
+            {
+                _navn = value;
+            }
+        }
+        public int Point // jeg laver en public int 'Point' og inden i den laver jeg mine getters og setters
+        { // get returnere den nuværende værdi/value af '_point' og set bruger nøgleordet 'value' til at sætte værdien af '_point'
+            get
+            {
+                return _point;
+            }
+            set
+            {
+                _point = value;
+            }
+        }
+        public DancerClass(string navn, int point) // her laver jeg en constructor hvor jeg har angivet 'navn' som string og 'point' som int
+        {                                         // og jeg har sagt at '_navn' er det samme som 'navn' og '_point' er det samme som 'point' 
+            _navn = navn;
+            _point = point;
+        }
+        /* her er min operator som indeholder 2 objecter som jeg kalder for 'dancer1' og 'dancer2', 
+         nedenunder laver jeg endnu et nyt object som hedder 'dancerTotal' og jeg bruger det object til at udskrive resultatet for begge dancere */
+        public static DancerClass operator +(DancerClass dancer1, DancerClass dancer2) 
+        {
+            DancerClass dancerTotal = new DancerClass(dancer1.Navn + " & " + dancer2.Navn + " ", dancer1.Point + dancer2.Point);
+            return dancerTotal;
+        }
+    }
+}
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// Password
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Text.RegularExpressions;
+using System.IO;
+
+namespace ClassLibraryPassword
+{
+    public class Password // har lavet en ny class
+    {
+        // har sat '_minTegn' og 'MinTegn' til at være public strings
+        public string _minTegn;
+        public string MinTegn
+        { // jeg returnere '_minTegn' og sætter den til at have en værdi med nøgleordet 'value'
+            get { return _minTegn; }
+            set { _minTegn = value; }
+        }
+        // jeg laver en constructor hvor jeg sætter 'minTegn' til at være string og derefter sætter jeg at '_minTegn' skal være det samme som 'minTegn' 
+        public Password(string minTegn)
+        {
+            _minTegn = minTegn;
+        }
+        // laver en ny metode hvor jeg igen angiver 'minTegn' som string og derefter laver jeg et if/else statement hvor at 'minTegn' minimum skal være 12 tegn 
+        public bool PasswordMinTegn(string minTegn)
+        {
+            if (minTegn.Length < 12) // hvis ens password ikke er 12 tegn langt for man en fejlbesked og det bliver ikke godkendt
+            {
+                Console.Clear();
+                Console.WriteLine("Dit password skal minimum indholde 12 tegn.                          | Ikke Godkendt."); // fejlbesked
+                return false; // bool værdi som er false
+            }
+            else  // hvis ens password minimum er 12 tegn langt eller større så bliver det godkendt og kravet bliver opfyldt
+            {
+                Console.Clear();
+                Console.WriteLine("Dit password indeholder 12 tegn.                                     | Godkendt."); // godkendt krav
+                return true; // sætter bool værdien valid til at være true da man har opfyldt kravet
+            }
+        }
+        public bool StoreOgSmåBokstaver(string BrugerPassword) // jeg har lavet en metode som der checker for store og små bogstaver
+        {
+            string BogstavChecker = "(?=.*[a-z])(?=.*[A-Z])"; // min regex som checker om der er mindst 1 småt og 1 stort bogstav
+            Regex RegexObj = new Regex(BogstavChecker); // laver et object som jeg kalder for RegexObj og siger at den skal bruge min Regex checker
+
+            if (RegexObj.IsMatch(BrugerPassword)) // RegexObj.IsMatch betyder at hvis brugeren har skrevet et password der matcher kriterierne så skal den printe det der står nedenunder
+            {
+                Console.WriteLine("Dit password indeholder store og små bogstaver.                      | Godkendt. "); // tekst for hvis det bliver godkendt
+                return true;
+            }
+            else  // !RegexObj er det samme bare modsat det vil sige at hvis passwordet ikke indeholder små og store bogstaver giver den en fejlbesked
+            {
+                Console.WriteLine("Du skal bruge STORE og små bogstaver.                                | Ikke Godkendt."); // fejlbesked
+                return false;
+            }
+        }
+        public bool SpecialTegn(string BrugerPassword) // jeg har lavet en metode som der tjekker om der er tal i passwordet
+        {
+            string TegnChecker = "^(?=.*[0-9])(?=.*[:!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~])+"; //  min regex som checker for at der er minimum et tal og minimum et tegn i et password
+            Regex TegnOgTal = new Regex(TegnChecker); // laver et objekt jeg kalder for TegnOgTal og siger at den skal bruge min regex checker
+
+            if (TegnOgTal.IsMatch(BrugerPassword)) // TegnOgTal.IsMatch gør at hvis kriterierne bliver opfyldt atlså hvis man i sit password minimum bruger et tal og et special tegn så bliver det godkendt
+            {
+                Console.WriteLine("Dit password indeholder specialtegn og tal.                          | Godkendt."); // tekst for hvis det bliver godkendt
+                return true;
+            }
+            else  // gør at hvis passwordet ikke indeholder mindst et tal og et special tegn så giver den en fejlbesked
+            {
+                Console.WriteLine("Dit password skal minimum indeholde et tal og et specialtegn.        | Ikke Godkendt."); // fejlbesked
+                return false;
+            }
+        }
+        public bool StartOgSlut(string BrugerPassword) // metode som checker for om der er tal i starten eller slutningen af passwordet
+        {
+            string StartOgSlutChecker = "^\\d|\\d$"; // min regex string som gør at der ikke må være tal i starten eller slutnigen af passwordet
+            Regex StartOgSlutTal = new Regex(StartOgSlutChecker); // her er det objekt jeg bruger nede i mine if statements
+
+            if (StartOgSlutTal.IsMatch(BrugerPassword)) // hvis der er et start tal eller slut tal i passwordet så udprinter den beskeden nedenunder 
+            {
+                Console.WriteLine("Start og slut tal er ikke tilladt i dit password.                    | Ikke Godkendt."); // fejlbesked
+                return false;
+            }
+            else // hvis der ikke er start tal eller slut tal i passwordet udprinter den beskeden nedenunder
+            {
+                Console.WriteLine("Der er ingen tal i starten eller slutningen af dit password.         | Godkendt."); // tekst for at det blev godkendt
+                return true;
+            }
+        }
+        public bool WhiteSpace(string BrugerPassword) // her har jeg lavet en metode som der tjekker om der er mellemrum i passwordet
+        {
+            string WhiteSpaceChecker = "^[^\\s]+$"; // min regex string som gør at der ikke må være mellemrum i passwordet
+            Regex whiteSpace = new Regex(WhiteSpaceChecker); // mit objekt som jeg bruger nede i mine if statements 
+
+            if (whiteSpace.IsMatch(BrugerPassword)) // hvis der er mellemrum i passwordet udprinter den beskeden nedenunder
+            {
+                Console.WriteLine("Dit password indeholder ikke mellemrum.                              | Godkendt."); // tekst for at det blev godkendt
+                return true;
+            }
+            else   // hvis der ikke er mellemrum i passwordet udprinter den beskeden nedenunder
+            {
+                Console.WriteLine("Dit password må ikke indholde et mellemrum.                          | Ikke Godkendt."); // fejlbesked
+                return false;
+            }
+        }
+        public bool AlleKrav(string BrugerNavn, string BrugerPassword, bool valid) // jeg har lavet en bool metode som checker om alle kravene er true eller false
+        {
+            // jeg bruger valid til at checke om alle kravene er true, hvis det er false så bliver det ved med at loope indtil alle krav er true
+            valid = PasswordMinTegn(BrugerPassword);
+            if (valid) valid = StoreOgSmåBokstaver(BrugerPassword);
+            if (valid) valid = SpecialTegn(BrugerPassword);
+            if (valid) valid = StartOgSlut(BrugerPassword);
+            if (valid) valid = WhiteSpace(BrugerPassword);
+
+            if (valid)
+                return true;
+            else
+                return false;
+        }
+    }
+}
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
