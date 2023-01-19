@@ -109,8 +109,12 @@ namespace TheThreeCases
                     Console.ForegroundColor = ConsoleColor.Gray; // skifter tekstfarven til normal
                     Console.ReadKey();
 
-                    string Login = File.ReadAllText(Pathfile);
-
+                    string Login = File.ReadAllText(Pathfile); // sætter strengen ''Login'' til at skulle læse alt min tekst inde i min tekstfil
+                  
+                    /*Jeg laver et do/while loop som først ber dig om at logge ind med det brugernavn og password du lavede tidligere.
+                      Hvis dit login er blevet godkendt så kan du nu gå videre og ændre dit password med de samme krav som dit gamle password.
+                      Hvis det er forkert så får du en fejlbesked og du bliver ved med at få den fejlbesked indtil du gør det rigtigt fordi det er et loop.*/
+                    
                     do
                     {
                         Console.WriteLine();
@@ -130,14 +134,19 @@ namespace TheThreeCases
                         }
                         else
                         {
+                            Console.ForegroundColor = ConsoleColor.Red; // skifter tekstfarven til rød
+                            Console.WriteLine();
                             Console.WriteLine("Dit login er forkert prøv igen.");
+                            Console.ForegroundColor = ConsoleColor.Gray; // skifter tekstfarven til normal
                             valid = false;
                         }
-                        Console.ReadKey();
                     } while (valid == false);
 
-                    Login = File.ReadAllText(Pathfile);
-
+                    Login = File.ReadAllText(Pathfile); // læser alt tekst i min tekstfil
+                    
+                    /* Jeg laver et do/while loop hvor du bliver bedt om at lave dit nye password efter du har logget ind korrekt.
+                       Først får du kravene at se igen derefter skal du indtaste dit nye password, hvis det er godkendt så lukker programmet og det bliver gemt til en tekstfil.
+                       Hvis det ikke er godkendt får du en fejlbesked indtil at du gør det rigtigt. Når du har gjort det rigtigt og det er godkendt lukker programmet og det bliver gemt til en tekstfil.*/
                     do
                     {
                         Console.WriteLine("Krav: 12 tegn, STORE og små bogstaver, Et tal og et specialtegn, Ingen tal i starten eller slutningen, ingen mellemrum");
@@ -148,7 +157,10 @@ namespace TheThreeCases
                         if (Login == (BrugerNavn + " , " + BrugerPassword))
                         {
                             Console.WriteLine();
+                            Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine("Dit nye password må ikke være det samme som det gamle!               | Ikke Godkendt.");
+                            Console.WriteLine();
+                            Console.ForegroundColor = ConsoleColor.Gray;
                             valid = false;
                         }
                         else
@@ -156,7 +168,7 @@ namespace TheThreeCases
                             if (valid)
                             {
                                 Console.WriteLine();
-                                Console.ForegroundColor = ConsoleColor.Green; // skifter tekstfarven til grøn
+                                Console.ForegroundColor = ConsoleColor.Green;
                                 Console.WriteLine("Dit password er nu blevet ændret!");
                                 valid = true;
                                 File.AppendAllText(Pathfile, "\n" + BrugerNavn + " , " + BrugerPassword); // gemmer det som mine strings indeholder til en tekstfil, ''\n'' laver en ny linje
@@ -164,7 +176,9 @@ namespace TheThreeCases
                             else
                             {
                                 Console.WriteLine();
+                                Console.ForegroundColor = ConsoleColor.Red;
                                 Console.WriteLine("Dit password kunne desværre ikke ændres. Prøv igen");
+                                Console.ForegroundColor = ConsoleColor.Gray;
                                 Console.WriteLine();
                                 valid = false;
                             }

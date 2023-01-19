@@ -10,33 +10,18 @@ namespace ClassLibraryPassword
 {
     public class Password // har lavet en ny class
     {
-        // har sat '_pwLogin' og 'Passwordlogin' til at være public strings
-        public string _pwLogin;
-        public string Passwordlogin
-        { // jeg returnere '_pwlogin' og sætter den til at have en værdi med nøgleordet 'value'
-            get { return _pwLogin; }
-            set { _pwLogin = value; }
+        // har sat '_minTegn' og 'MinTegn' til at være public strings
+        public string _minTegn;
+        public string MinTegn
+        { // jeg returnere '_minTegn' og sætter den til at have en værdi med nøgleordet 'value'
+            get { return _minTegn; }
+            set { _minTegn = value; }
         }
-        // jeg laver en constructor hvor jeg sætter 'passwordLogin' til at være string og derefter sætter jeg at '_pwLogin' skal være det samme som 'mintegn' 
-        public Password(string passwordLogin)
+        // jeg laver en constructor hvor jeg sætter 'minTegn' til at være string og derefter sætter jeg at '_minTegn' skal være det samme som 'minTegn' 
+        public Password(string minTegn)
         {
-            _pwLogin = passwordLogin;
+            _minTegn = minTegn;
         }
-
-        //public bool Login(string pwLogin, string BrugerPassword)
-        //{
-        //    if (pwLogin == BrugerPassword)
-        //    {
-        //        Console.WriteLine("Dit password må IKKE være det samme som et eksisterende password.");
-        //        return false;
-        //    }
-        //    else
-        //    {
-        //        Console.WriteLine($"Du er nu logget ind som: {pwLogin}");
-        //        return true;
-        //    }
-        //}
-
         // laver en ny metode hvor jeg igen angiver 'minTegn' som string og derefter laver jeg et if/else statement hvor at 'minTegn' minimum skal være 12 tegn 
         public bool PasswordMinTegn(string minTegn)
         {
