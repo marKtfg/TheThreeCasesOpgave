@@ -43,6 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DanceProgram.cs" />
+    <Compile Include="FootballProgram.cs" />
+    <Compile Include="PasswordProgram.cs" />
     <Compile Include="TheThreeCasesProgram.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
